@@ -36,6 +36,18 @@ using namespace std;
 #endif
 
 #define NUMOFDIRS 8
+
+pair<int,int> getBottomOfStack(stack<pair<int,int>> s)
+{
+    pair<int,int> p;
+    while (!s.empty())
+    {
+        p = s.top();
+        s.pop();
+    }
+    return p;
+}
+
 double heurastic_1 (int robotposeX, int robotposeY, int goalposeX, int goalposeY)
 {
     //Euclidean h
@@ -298,10 +310,23 @@ static void planner(
     }
     else
     {
-        action_ptr[0] = robot_traj.top().first;
-        action_ptr[1] = robot_traj.top().second;
-        robot_traj.pop();
+        // action_ptr[0] = robot_traj.top().first;
+        // action_ptr[1] = robot_traj.top().second;
+        // robot_traj.pop();
+        pair<int,int> nextStep = getBottomOfStack(robot_traj);
+        action_ptr[0] = nextStep.first;
+        action_ptr[1] = nextStep.second;
+
     }
+
+    int dx = action_ptr[0] - robotposeX;
+    int dy = action_ptr[1] - robotposeY;
+    
+    dx = std::max(-1, std::min(1, dx));
+    dy = std::max(-1, std::min(1, dy));
+    
+    action_ptr[0] = robotposeX + dx;
+    action_ptr[1] = robotposeY + dy;
     loop_count++;
 
     return;

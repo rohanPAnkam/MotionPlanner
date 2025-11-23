@@ -26,7 +26,7 @@ if(fgetl(FID) ~= 'R')
     fprintf('Error parsing problem file.')
     return;
 end
-R = fscanf(FID, '%f,%f');
+R = fscanf(FID, '%f,%f').';
 
 if(fgetl(FID) ~= 'T')
     fprintf('Error parsing problem file.')
